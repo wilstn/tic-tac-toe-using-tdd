@@ -16,4 +16,8 @@ class Position
     self
   end
 
+  def possible_moves
+    @board.each_index.select {|i| @board[i] == "-"}
+  end
+
 end

@@ -23,4 +23,11 @@ describe Position do
     end
   end
 
+  context "#possible_moves" do
+    it "should check for possible moves" do
+      position = Position.new.move(0).move(1)
+      expect(position.possible_moves).to eq((2..8).to_a)
+    end
+  end
+
 end
