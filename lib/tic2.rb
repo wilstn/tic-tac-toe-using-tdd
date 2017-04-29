@@ -7,13 +7,17 @@ class Position
   end
 
   def change_turn(o, x)
+    # checks if current turn is x. if it is, returns o
     @turn == "x" ? o : x
   end
 
   def move(index)
-    @board[index] = @turn
-    @turn = change_turn("o", "x")
-    self
+    # move takes in current board and returns a new position after move
+    # as otherwise minimax uses the same board
+    position = Position.new(@board.dup, @turn)
+    position.board[index] = position.turn
+    position.turn = change_turn("o", "x")
+    position
   end
 
   def possible_moves
@@ -38,6 +42,22 @@ class Position
       return true if counter == 3
     end
     return false
+  end
+
+  def minimax
+    # these are the base cases when game terminate with win, lose or draw
+    # assuming x to be the computer, this would assign highest point to x winning
+    return 100 if win("x")
+    return -100 if win("o")
+    return 0 if possible_moves.empty?
+
+    # if none of the base cases are hit, call minimax on each of the possible move recursively
+    # until a base case is hit
+    kk = possible_moves.each do |possible_space|
+      move(possible_space).minimax #.send(change_turn(:max, :min))
+    end
+    puts "#{kk}"
+
   end
 
 end

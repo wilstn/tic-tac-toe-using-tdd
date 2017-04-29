@@ -45,4 +45,21 @@ describe Position do
     end
   end
 
+  context "#minimax" do
+    it "should evaluate to 100 for a win for x" do
+      position = Position.new(%w(x x x o o - - - -), "x")
+      expect(position.minimax).to eq(100)
+    end
+
+    it "should evaluate to -100 for a loss for x" do
+      position = Position.new(%w(x x - o o o x x -), "o")
+      expect(position.minimax).to eq(-100)
+    end
+
+    it "should evaluate to 0 for a draw" do
+      position = Position.new(%w(x o x x o o o x x), "o")
+      expect(position.minimax).to eq(0)
+    end
+  end
+
 end
