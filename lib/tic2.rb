@@ -2,7 +2,18 @@ class Position
   attr_accessor :board, :turn
 
   def initialize(board=nil, turn="x")
-    @board = %w(-) * 9 || board
+    @board = board || %w(-) * 9
     @turn = turn
   end
+
+  def change_turn(o, x)
+    @turn == "x" ? o : x
+  end
+
+  def move(index)
+    @board[index] = @turn
+    @turn = change_turn("o", "x")
+    self
+  end
+
 end
