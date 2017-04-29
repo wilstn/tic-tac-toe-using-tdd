@@ -30,4 +30,19 @@ describe Position do
     end
   end
 
+  context "#win" do
+    it "should check if position is won for player x/o" do
+      position1 = Position.new(%w(x x x o - o - - -), "o")
+      position2 = Position.new(%w(x - - o x o - - x), "o")
+      position3 = Position.new(%w(x - - x o o x - -), "o")
+      position4 = Position.new(%w(- - x o x o x - -), "o")
+      position5 = Position.new(%w(x x - o x o - - -), "o")
+      expect(position1.win("x")).to be true
+      expect(position2.win("x")).to be true
+      expect(position3.win("x")).to be true
+      expect(position4.win("x")).to be true
+      expect(position5.win("x")).to be false
+    end
+  end
+
 end
