@@ -47,17 +47,31 @@ class Position
   def minimax
     # these are the base cases when game terminate with win, lose or draw
     # assuming x to be the computer, this would assign highest point to x winning
+    puts "#{@@minimax}" if defined? @@minimax
     return 100 if win("x")
     return -100 if win("o")
     return 0 if possible_moves.empty?
 
+    @@minimax ||= {}
+    value = @@minimax[@board]
+    return value if value
     # if none of the base cases are hit, call minimax on each of the possible move recursively
-    # until a base case is hit
-    kk = possible_moves.each do |possible_space|
-      move(possible_space).minimax #.send(change_turn(:max, :min))
-    end
-    puts "#{kk}"
+    # until a base case is hit, returning 100, -100 or 0 for the move.
+    # eg, for each board position, one of the results in @@minimax:
+    # ["x", "x", "-", "o", "o", "x", "o", "-", "x"]=>[-100, [100]] -100 indicate a loss if "o" takes index position 2
+    # while +100 win for "x" if "o" takes index position 7. This current board position with 4 x and 3 o indicates its o's turn
+    # Given this result, "o" will choose index 7 and this is done by method: send(change_turn(:max, :min)) which seeks to maximise
+    # or minimise the return value depending on whose turn it is. As such, this board position will have a point of -100
+    @@minimax[@board] = possible_moves.map { |possible_space|
+      puts "whose turn: #{turn}\nmove: #{possible_space}\npoints: #{move(possible_space).minimax}"
+      move(possible_space).minimax
+    }.send(change_turn(:max, :min))
+  end
 
+  # this method seeks to select the possible move (index number to make move) that minimise/maximise the result of above minimax method
+  # depending on whose turn it is.
+  def best_move
+    possible_moves.send(change_turn(:max_by, :min_by)) {|idx| move(idx).minimax}
   end
 
 end

@@ -62,4 +62,11 @@ describe Position do
     end
   end
 
+  context "#best_move" do
+    it "should select the best move given a position" do
+      position = Position.new(%w(x x - o o - - - -), "x")
+      expect(position.best_move).to eq(2)
+    end
+  end
+
 end
