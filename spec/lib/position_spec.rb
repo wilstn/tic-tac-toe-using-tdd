@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'tic2'
+require 'position'
 
 describe Position do
   context "#new" do
