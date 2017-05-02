@@ -52,7 +52,8 @@ class Position
     return 100 if win("x")
     return -100 if win("o")
     return 0 if possible_moves.empty?
-
+    # with the board position as key in the @@minimax hash, below code stores the value so that it doesn't need to go through it again.
+    # memoization technique to improve efficiency
     @@minimax ||= {}
     value = @@minimax[@board]
     return value if value
@@ -61,7 +62,7 @@ class Position
     # eg, for each board position, one of the results in @@minimax:
     # ["x", "x", "-", "o", "o", "x", "o", "-", "x"]=>[-100, [100]] -100 indicate a loss if "o" takes index position 2
     # while +100 win for "x" if "o" takes index position 7. This current board position with 4 x and 3 o indicates its o's turn
-    # Given this result, "o" will choose index 7 and this is done by method: send(change_turn(:max, :min)) which seeks to maximise
+    # Given this result, "o" will choose index 2 and this is done by method: send(change_turn(:max, :min)) which seeks to maximise
     # or minimise the return value depending on whose turn it is. As such, this board position will have a point of -100
     @@minimax[@board] = possible_moves.map { |possible_space|
       # puts "whose turn: #{turn}\nmove: #{possible_space}\npoints: #{move(possible_space).minimax}"
